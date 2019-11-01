@@ -21,7 +21,7 @@ object PageRankSparkMain {
                        .appName("PageRankSpark")
                        .config(conf)
                        .getOrCreate()
-    
+    val max_iter = if (args.length > 1) args(1).toInt else 10
     val k: Int = 4
     
     val lines = sparkSession.read.textFile(args(0)).rdd
@@ -32,6 +32,12 @@ object PageRankSparkMain {
     val PR = links.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
     
     
+    for (i <- 1 to max_iter) {
+      val contr = links.join(PR).values.flatMap{case (nodes, pr) => 
+        val size = nodes.size
+        nodes.map(node => (node, pr / size))
+      }
+    }
 
     
     

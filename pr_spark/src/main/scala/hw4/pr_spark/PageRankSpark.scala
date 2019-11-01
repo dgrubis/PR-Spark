@@ -4,6 +4,8 @@ import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.log4j.LogManager
 import org.apache.log4j.Level
+import org.apache.spark.sql.SparkSession
+import scala.math.pow
 
 object PageRankSparkMain {
   
@@ -13,6 +15,21 @@ object PageRankSparkMain {
       logger.error("Usage:\nRS_RMain <input dir> <output dir>")
       System.exit(1)
     }
+    
+    val conf = new SparkConf()
+    val sparkSession = SparkSession.builder
+                       .appName("PageRankSpark")
+                       .config(conf)
+                       .getOrCreate()
+    
+    val k: Int = 4
+    
+    val lines = sparkSession.read.textFile(args(0)).rdd
+    val links = lines.map{ s =>
+      val parts = s.split("\\s+")
+      (parts(0), parts(1))
+    }.distinct().groupByKey().cache() //assume a file is loaded in for now
+    val PR = links.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
     
     
 

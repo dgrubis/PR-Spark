@@ -29,7 +29,7 @@ object PageRankSparkMain {
       val parts = s.split("\\s+")
       (parts(0), parts(1))
     }.distinct().groupByKey().cache() //assume a file is loaded in for now
-    val PR = links.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
+    var PR = links.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
     
     
     for (i <- 1 to max_iter) {
@@ -37,6 +37,7 @@ object PageRankSparkMain {
         val size = nodes.size
         nodes.map(node => (node, pr / size))
       }
+      PR = contr.reduceByKey(_+_).mapValues(0.15 + 0.85 * _) //update the pagerank values
     }
 
     

@@ -25,15 +25,18 @@ object PageRankSparkMain {
     val k: Int = 4
     
     val lines = sparkSession.read.textFile(args(0)).rdd
-    val links = lines.map{ s =>
+    val ids = lines.map{ s =>
       val parts = s.split("\\s+")
       (parts(0), parts(1))
     }.distinct().groupByKey().cache() //assume a file is loaded in for now
-    var PR = links.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
+    
+    val idsDangling = ids.flatMap{case(node, adjList) => if (adjList == None) "0" else adjList}
+    //handles dangling nodes by assigning to a dummy node if the adjacency list is empty (has no outgoing edges)
+    var PR = ids.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
     
     
     for (i <- 1 to max_iter) {
-      val contr = links.join(PR).values.flatMap{case (nodes, pr) => 
+      val contr = ids.join(PR).values.flatMap{case (nodes, pr) => 
         val size = nodes.size
         nodes.map(node => (node, pr / size))
       }

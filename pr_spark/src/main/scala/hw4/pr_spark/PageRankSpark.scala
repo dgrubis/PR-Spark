@@ -12,7 +12,7 @@ object PageRankSparkMain {
   def main(args: Array[String]) {
     val logger: org.apache.log4j.Logger = LogManager.getRootLogger
     if (args.length != 2) {
-      logger.error("Usage:\nRS_RMain <input dir> <output dir>")
+      logger.error("Usage:\nPageRankSparkMain <input dir> <output dir>")
       System.exit(1)
     }
     
@@ -35,8 +35,8 @@ object PageRankSparkMain {
     var PR = ids.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
     
     
-    for (i <- 1 to max_iter) {
-      val contr = ids.join(PR).values.flatMap{case (nodes, pr) => 
+    for (i <- 1 to max_iter) { //loop through max iterations
+      val contr = ids.join(PR).values.flatMap{case (nodes, pr) => //inner join the graph with the pagerank values
         val size = nodes.size
         nodes.map(node => (node, pr / size))
       }

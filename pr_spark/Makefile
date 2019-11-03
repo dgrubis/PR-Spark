@@ -4,7 +4,7 @@
 # -----------------------------------------------------------
 spark.root=/usr/local/spark-2.4.4-bin-without-hadoop-scala-2.12
 hadoop.root=/usr/local/hadoop
-app.name=PageRankSpark
+app.name=hw4.pr_spark.PageRankSpark
 jar.name=pr_spark-0.0.1-SNAPSHOT.jar
 maven.jar.name=pr_spark-0.0.1-SNAPSHOT.jar
 job.name=PageRankSparkMain

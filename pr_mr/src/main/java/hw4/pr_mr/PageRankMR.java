@@ -29,7 +29,12 @@ public class PageRankMR extends Configured implements Tool {
 			
 			context.write(n, new Text(structure[1])); //pass along the graph structure
 			
+			String [] outlinks = structure[1].split(","); //split the adjacency list with comma
 			
+			for(int i = 0 ; i < outlinks.length ; i++) {
+				context.write(new IntWritable(i + 1), new Text(outlinks[i]));
+				//send the contributions with the outgoing links
+			}
 		}
 	}
 

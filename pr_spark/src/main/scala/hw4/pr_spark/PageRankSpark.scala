@@ -32,7 +32,7 @@ object PageRankSparkMain {
     
     val idsDangling = ids.flatMap{case(node, adjList) => if (adjList == None) "0" else adjList}
     //handles dangling nodes by assigning to a dummy node if the adjacency list is empty (has no outgoing edges)
-    var PR = ids.mapValues(v => 1.0 / pow(k,2)) //set the initial pageRank values as 1/k^2
+    var PR = ids.mapValues(v => if (v!= 0) (1.0 / pow(k,2)) else 0) //set the initial pageRank values as 1/k^2 except the dummy vertex 0 should start as 0
     
     
     for (i <- 1 to max_iter) { //loop through max iterations

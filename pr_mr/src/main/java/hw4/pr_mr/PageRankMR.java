@@ -49,16 +49,11 @@ public class PageRankMR extends Configured implements Tool {
 
 	public int run(final String[] args) throws Exception {
 		final Configuration conf = getConf();
-		final Job job = Job.getInstance(conf, "Word Count");
+		final Job job = Job.getInstance(conf, "PageRank");
 		job.setJarByClass(PageRankMR.class);
 		final Configuration jobConf = job.getConfiguration();
 		jobConf.set("mapreduce.output.textoutputformat.separator", "\t");
-		// Delete output directory, only to ease local development; will not work on AWS. ===========
-//		final FileSystem fileSystem = FileSystem.get(conf);
-//		if (fileSystem.exists(new Path(args[1]))) {
-//			fileSystem.delete(new Path(args[1]), true);
-//		}
-		// ================
+		
 		job.setMapperClass(TokenizerMapper.class);
 		job.setCombinerClass(IntSumReducer.class);
 		job.setReducerClass(IntSumReducer.class);

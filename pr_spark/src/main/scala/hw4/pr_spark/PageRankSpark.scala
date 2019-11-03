@@ -29,7 +29,7 @@ object PageRankSparkMain {
       val parts = s.split(",")
       (parts(0), parts(1))
     }.distinct().groupByKey().cache() //assume a file is loaded in for now
-    //cache in order to tell Spark to not recompute the graph rdd
+    //cache in order to tell Spark to not recompute the graph rdd at each iteration
     
     val idsDangling = ids.flatMap{case(node, adjList) => if (adjList == None) "0" else adjList}
     //handles dangling nodes by assigning to a dummy node if the adjacency list is empty (has no outgoing edges)

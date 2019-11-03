@@ -44,7 +44,11 @@ object PageRankSparkMain {
       PR = contr.reduceByKey(_+_).mapValues(0.15 + 0.85 * _) //update the pagerank values
     }
 
-    
+    val results = PR.collect()
+    results.foreach(tup => println(s"${tup._1} has rank:  ${tup._2} ."))
+    //print out the final pagerank value for each node
+
+    sparkSession.stop()
     
 }
 }

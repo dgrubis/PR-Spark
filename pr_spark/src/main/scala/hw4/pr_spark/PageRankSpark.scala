@@ -26,9 +26,10 @@ object PageRankSparkMain {
     
     val lines = sparkSession.read.textFile(args(0)).rdd
     val ids = lines.map{ s =>
-      val parts = s.split("\\s+")
+      val parts = s.split(",")
       (parts(0), parts(1))
     }.distinct().groupByKey().cache() //assume a file is loaded in for now
+    //cache in order to tell Spark to not recompute the graph rdd
     
     val idsDangling = ids.flatMap{case(node, adjList) => if (adjList == None) "0" else adjList}
     //handles dangling nodes by assigning to a dummy node if the adjacency list is empty (has no outgoing edges)

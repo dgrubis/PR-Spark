@@ -1,13 +1,13 @@
-# Makefile for Assignment 3 - Spark Joins on Twitter Data
+# Makefile for Assignment 4 - Spark PageRank
 
 # Customize these paths for your environment.
 # -----------------------------------------------------------
 spark.root=/usr/local/spark-2.4.4-bin-without-hadoop-scala-2.12
 hadoop.root=/usr/local/hadoop
-app.name=Rep_D
-jar.name=hw3-counts-0.0.1-SNAPSHOT.jar
-maven.jar.name=hw3-counts-0.0.1-SNAPSHOT.jar
-job.name=Rep_DMain
+app.name=PageRankSpark
+jar.name=pr_spark-0.0.1-SNAPSHOT.jar
+maven.jar.name=pr_spark-0.0.1-SNAPSHOT.jar
+job.name=PageRankSparkMain
 local.master=local[4]
 local.input=input
 local.output=output

@@ -41,6 +41,7 @@ object PageRankSparkMain {
         val size = nodes.size
         nodes.map(node => (node, pr / size))
       }
+      var danglingPR = PR.lookup("0")(0) //uses lookup to read out dangling PR mass
       PR = contr.reduceByKey(_+_).mapValues(0.15 + 0.85 * _) //update the pagerank values
       PR.toDebugString //add todebugstring to log files after each iteration
     }

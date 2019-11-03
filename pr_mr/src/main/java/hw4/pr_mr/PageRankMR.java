@@ -18,10 +18,17 @@ import org.apache.log4j.Logger;
 public class PageRankMR extends Configured implements Tool {
 	private static final Logger logger = LogManager.getLogger(PageRankMR.class);
 
-	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
+	public static class TokenizerMapper extends Mapper<Object, Text, IntWritable, Text> {
 
 		@Override
-		public void map(final Object key, final Text value, final Context context) throws IOException, InterruptedException {
+		public void map(final Object vertex, final Text adjacencyList, final Context context) throws IOException, InterruptedException {
+			
+			String [] structure = adjacencyList.toString().split(","); //split the record by a comma
+			
+			IntWritable n = new IntWritable(Integer.parseInt(structure[0])); //create a writable as the key that sends the graph structure
+			
+			context.write(n, new Text(structure[1])); //pass along the graph structure
+			
 			
 		}
 	}
